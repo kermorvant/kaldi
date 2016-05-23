@@ -9,6 +9,7 @@
 
 
 for x in train test; do
+  mkdir -p exp/make_mfcc/$x
   #cut -d ' ' -f 1 local/groundtruth_$x2011.txt  | sed 's/lot/\/home\/kermorvant\/Data\/Images\/Latin\/French\/Rimes\/imagettes_mots_cursif_rescaled\/lot/;s/.tiff/.png/' | sort > $x_files_fullpath.txt
 
   #time prepocressor -inputFile $x_files_fullpath.txt -pipeline "grayscale | flip | convertToFloat | normalize -newMax 1 | featExtract -winWidth 3 -winShift 2 -featRawCellHeight 1 -featRawCellWidth 1 -featRawCellShift 1 -kaldiFile $x.ark,f | devNull"
