@@ -10,9 +10,8 @@
 rimes=/data/rimes
 
 # The following command prepares the data/{train,dev,test} directories.
-local/rimes_data_prep.sh || exit 1;
-local/rimes_prepare_lang.sh  || exit 1;
-utils/validate_lang.pl data/lang/ # Note; this actually does report errors,
+#local/rimes_prepare_lang.sh  || exit 1;
+#utils/validate_lang.pl data/lang/ # Note; this actually does report errors,
    # and exits with status 1, but we've checked them and seen that they
    # don't matter (this setup doesn't have any disambiguation symbols,
    # and the script doesn't like that).
@@ -21,13 +20,13 @@ utils/validate_lang.pl data/lang/ # Note; this actually does report errors,
 # mfccdir should be some place with a largish disk where you
 # want to store MFCC features.
 
-mfccdir=mfcc
-for x in  test train; do
+#mfccdir=mfcc
+#for x in  test train; do
   # steps/make_mfcc.sh --cmd "$train_cmd" --nj 20 data/$x exp/make_mfcc/$x $mfccdir || exit 1;
-  steps/compute_cmvn_stats.sh --fake data/$x exp/make_mfcc/$x $mfccdir || exit 1;
-done
+#  steps/compute_cmvn_stats.sh --fake data/$x exp/make_mfcc/$x $mfccdir || exit 1;
+#done
 
-utils/subset_data_dir.sh data/train 10000 data/train_10k
+#utils/subset_data_dir.sh data/train 10000 data/train_10k
 
 
 
@@ -35,8 +34,9 @@ utils/subset_data_dir.sh data/train 10000 data/train_10k
 # effect may not be clear till we test triphone system.  See
 # wsj setup for examples (../../wsj/s5/run.sh)
 
-steps/train_mono.sh  --nj 4 --cmd "$train_cmd" data/train_10k data/lang exp/mono0a
-
+echo "--delta-order=0" > exp/mono0a/delta_opts
+local/train_mono.sh  --nj 4 --cmd "$train_cmd" data/train_10k data/lang exp/mono0a
+exit 1;
 utils/mkgraph.sh --mono data/lang exp/mono0a exp/mono0a/graph && \
 steps/decode.sh --nj 10 --cmd "$decode_cmd" \
       exp/mono0a/graph data/test exp/mono0a/decode
