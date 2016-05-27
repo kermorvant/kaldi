@@ -10,8 +10,9 @@
 rimes=/data/rimes
 
 # The following command prepares the data/{train,dev,test} directories.
-#local/rimes_prepare_lang.sh  || exit 1;
-#utils/validate_lang.pl data/lang/ # Note; this actually does report errors,
+local/rimes_data_prep.sh || exit 1;
+local/rimes_prepare_lang.sh  || exit 1;
+utils/validate_lang.pl data/lang/ # Note; this actually does report errors,
    # and exits with status 1, but we've checked them and seen that they
    # don't matter (this setup doesn't have any disambiguation symbols,
    # and the script doesn't like that).
@@ -26,7 +27,7 @@ rimes=/data/rimes
 #  steps/compute_cmvn_stats.sh --fake data/$x exp/make_mfcc/$x $mfccdir || exit 1;
 #done
 
-#utils/subset_data_dir.sh data/train 10000 data/train_10k
+utils/subset_data_dir.sh data/train 10000 data/train_10k
 
 
 
