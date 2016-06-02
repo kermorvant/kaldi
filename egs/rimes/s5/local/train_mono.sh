@@ -21,7 +21,7 @@ config= # name of config file.
 stage=-4
 power=0.25 # exponent to determine number of gaussians from occurrence counts
 norm_vars=false # deprecated, prefer --cmvn-opts "--norm-vars=false"
-cmvn_opts="--norm-means-false" # can be used to add extra options to cmvn.
+cmvn_opts="" # can be used to add extra options to cmvn.
 # End configuration section.
 
 echo "$0 $@"  # Print the command line for logging
@@ -53,7 +53,8 @@ sdata=$data/split$nj;
 
 $norm_vars && cmvn_opts="--norm-vars=true $cmvn_opts"
 echo $cmvn_opts  > $dir/cmvn_opts # keep track of options to CMVN.
-delta_opts=`cat $dir/delta_opts 2>/dev/null`
+#delta_opts=`cat $dir/delta_opts 2>/dev/null`
+delta_opts="--delta-order=0"
 
 feats="ark,s,cs:apply-cmvn $cmvn_opts --utt2spk=ark:$sdata/JOB/utt2spk scp:$sdata/JOB/cmvn.scp scp:$sdata/JOB/feats.scp ark:- | add-deltas $delta_opts ark:- ark:- |"
 example_feats="`echo $feats | sed s/JOB/1/g`";
