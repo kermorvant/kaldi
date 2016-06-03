@@ -22,8 +22,8 @@ utils/validate_lang.pl data/lang/ # Note; this actually does report errors,
 # want to store MFCC features.
 
 mfccdir=mfcc
+local/rimes_make_features.sh || exit 1;
 for x in  test train; do
-  local/rimes_make_features.sh || exit 1;
   steps/compute_cmvn_stats.sh --fake data/$x exp/make_mfcc/$x $mfccdir || exit 1;
 done
 
