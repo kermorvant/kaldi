@@ -5,3 +5,4 @@ export PATH=$PWD/utils/:$KALDI_ROOT/tools/openfst/bin:$PWD:$PATH
 . $KALDI_ROOT/tools/config/common_path.sh
 export LC_ALL=C
 export SRILM=/Users/christo/Tools/srilm-1.7.1/bin/macosx
+export IMG_PATH='/Users/christo/Data/Images/Latin/French/Rimes/imagettes_mots_cursif'

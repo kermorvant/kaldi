@@ -8,7 +8,8 @@ import math
 import time
 import kaldi_io
 
-IMG_PATH = '/Users/christo/Data/Images/Latin/French/Rimes/imagettes_mots_cursif'
+
+IMG_PATH = os.environ['IMG_PATH']
 
 def display_image(image,name):
     cv2.imshow(name, image)
