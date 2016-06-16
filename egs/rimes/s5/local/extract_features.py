@@ -133,6 +133,7 @@ def extract_features(images, ark_file,annotation,display=True):
             #print number_of_frames,"frames",number_of_chars,"chars:", number_of_frames/number_of_chars,"frames/char"
             # write pixel values as features in file
             kaldi_io.write_mat(f, feature_mat, key=image_id)
+        print number_of_frames/number_of_chars,"frames/char"
             
 
 # read image list
@@ -145,7 +146,7 @@ for l in open(input_file).readlines():
     ltab= l.split()
     images.append(ltab[0])
     annotations.append(ltab[1])
-print "processing",len(images),"files from",input_file
+print "processing",len(images),"files from",input_file," saved in",output_file
 extract_features(images,output_file, annotations)
 
 

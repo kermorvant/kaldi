@@ -11,7 +11,7 @@ rimes=/data/rimes
 
 # The following command prepares the data/{train,dev,test} directories.
 local/rimes_data_prep.sh || exit 1;
-local/rimes_prepare_lang.sh  --num-nonsil-states 6 --num-sil-states  3 --position-dependent-phones false|| exit 1;
+local/rimes_prepare_lang.sh  || exit 1;
 utils/validate_lang.pl data/lang/ # Note; this actually does report errors,
    # and exits with status 1, but we've checked them and seen that they
    # don't matter (this setup doesn't have any disambiguation symbols,
@@ -40,7 +40,7 @@ local/train_mono.sh  --nj 4 --cmd "$train_cmd" data/train_10k data/lang exp/mono
 
 echo "--delta-order=0" > exp/mono0a/delta_opts
 utils/mkgraph.sh --mono data/lang exp/mono0a exp/mono0a/graph 
-  for i in 1 11 21 31 40
+  for i in 1 11 21 31 final
     do 
 
     steps/decode.sh --nj 10 --cmd "$decode_cmd" \

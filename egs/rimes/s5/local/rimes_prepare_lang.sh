@@ -92,7 +92,7 @@ cat $tmpdir/lm_${lm_suffix}.arpa | \
 #fstisstochastic $lang/G.fst
 
 
-./utils/prepare_lang.sh data/local/dict/ '<UNK>' data/local/lang data/lang
+./utils/prepare_lang.sh  --num-nonsil-states 6 --num-sil-states  3 --position-dependent-phones "false" data/local/dict/ '<UNK>' data/local/lang data/lang
 
 exit 0;
 
