@@ -76,6 +76,8 @@ def extract_features(images, ark_file,annotation,display=True):
     window_width =  3
     window_height = target_height
     window_shift = 3
+    background_value = [0,0,0]
+    display =  False
 
     number_of_chars = 0
     number_of_frames = 0
@@ -92,21 +94,23 @@ def extract_features(images, ark_file,annotation,display=True):
             img_centered = center_on_mass(img_inv)
             
             # add white pixel at the begining and at the end        
-            img_padded   =cv2.copyMakeBorder(img_centered, top=0, bottom=0, left=20, right=20, borderType= cv2.BORDER_CONSTANT, value=[0,0,0] )
+            img_padded   =cv2.copyMakeBorder(img_centered, top=0, bottom=0, left=20, right=20, borderType= cv2.BORDER_CONSTANT, value=background_value )
             #display_image(img_padded,"padded")
 
             #resize to XX px heigth
             nb_lines,nb_cols = img_padded.shape
             resize_cols = int(math.floor(nb_cols*float(target_height)/nb_lines))
             img_norm_height = cv2.resize(img_padded,(resize_cols, target_height), interpolation = cv2.INTER_CUBIC)
-            #display_image(img_norm_height,'features')
+            if display:
+                display_image(img_norm_height,'features')
             
             # reserve memory for features
             nb_windows = sliding_window_number(img_norm_height, stepSize=window_shift, windowSize=(window_width, window_height))
 
             number_of_frames +=nb_windows
             feature_mat = np.zeros((target_height,nb_windows),dtype=int)
-            #print "expect",nb_windows,"windows"
+            if display:
+                print "expect",nb_windows,"windows"
             for i,(x, y, window) in enumerate(sliding_window(img_norm_height, stepSize=window_shift, windowSize=(window_width, window_height))):
                     # if the window does not meet our desired window size, ignore it
                     if window.shape[0] != window_height or window.shape[1] != window_width:
@@ -114,13 +118,12 @@ def extract_features(images, ark_file,annotation,display=True):
                     img_win = img_norm_height[y:y+window_height,x:x+window_width]
                     features = cv2.resize(img_win,(1,target_height),interpolation=cv2.INTER_AREA)
                     feature_mat[:,i] = np.reshape(features,(target_height,))
-                    #print img_win
-                    #print features
-                    #clone = img_norm_height.copy()
-                    #cv2.rectangle(clone, (x, y), (x + window_width, y + window_height), (255, 255, 255), 1)
-                    #cv2.imshow("sliding", clone)
-                    #cv2.waitKey(1)
-                    #time.sleep(0.02)
+                    if display:
+                        clone = img_norm_height.copy()
+                        cv2.rectangle(clone, (x, y), (x + window_width, y + window_height), (255, 255, 255), 1)
+                        cv2.imshow("sliding", clone)
+                        cv2.waitKey(1)
+                        time.sleep(0.02)
             #print feature_mat.shape
             feature_mat = np.transpose(feature_mat.astype('float32'))
             feature_mat *=1./255
@@ -129,7 +132,7 @@ def extract_features(images, ark_file,annotation,display=True):
             #print image_id
             #print number_of_frames,"frames",number_of_chars,"chars:", number_of_frames/number_of_chars,"frames/char"
             # write pixel values as features in file
-            #kaldi_io.write_mat(f, feature_mat, key=image_id)
+            kaldi_io.write_mat(f, feature_mat, key=image_id)
             
 
 # read image list

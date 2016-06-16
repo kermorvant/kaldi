@@ -63,9 +63,9 @@ echo 'SIL' > $tmpdir/optional_silence.txt
 
 lm_suffix=o1g
 
-$SRILM/ngram-count -text $tmpdir/train.txt  -no-sos -no-eos -order 1  -lm $tmpdir/lm_${lm_suffix}.arpa -wbdiscount  -limit-vocab -vocab $tmpdir/dic.txt  -unk -map-unk "<UNK>" 
+$SRILM/ngram-count -text $tmpdir/test.txt  -no-sos -no-eos -order 1  -lm $tmpdir/lm_${lm_suffix}.arpa -wbdiscount  -limit-vocab -vocab $tmpdir/dic.txt  -unk -map-unk "<UNK>" 
 
-$SRILM/ngram -lm $tmpdir/lm_${lm_suffix}.arpa -ppl $tmpdir/test.txt # consider -debug 2
+$SRILM/ngram -lm $tmpdir/lm_${lm_suffix}.arpa -ppl $tmpdir/test.txt  # consider -debug 2
 
 
 cat $tmpdir/lm_${lm_suffix}.arpa | \

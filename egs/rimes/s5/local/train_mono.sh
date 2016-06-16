@@ -127,7 +127,7 @@ while [ $x -lt $num_iters ]; do
     $cmd $dir/log/update.$x.log \
       gmm-est --write-occs=$dir/$[$x+1].occs --mix-up=$numgauss --power=$power $dir/$x.mdl \
       "gmm-sum-accs - $dir/$x.*.acc|" $dir/$[$x+1].mdl || exit 1;
-    rm $dir/$x.mdl $dir/$x.*.acc $dir/$x.occs 2>/dev/null
+    #rm $dir/$x.mdl $dir/$x.*.acc $dir/$x.occs 2>/dev/null
   fi
   if [ $x -le $max_iter_inc ]; then
      numgauss=$[$numgauss+$incgauss];
