@@ -15,17 +15,17 @@ for x in train test; do
   sort local/groundtruth-$x-2011.txt > local/groundtruth-$x-2011.txt_sorted
 
   # create text transcription files
-  cut -d '/' -f 3 < local/groundtruth-$x-2011.txt | sed 's/.tiff//' | sort > data/$x/text
+  cut -d '/' -f 3 < local/groundtruth-$x-2011.txt_sorted | sed 's/.tiff//' | sort > data/$x/text
 
 
   # now get the "utt2spk" file that says, for each utterance, the speaker name. 
-  cut -d '/' -f 3 < local/groundtruth-$x-2011.txt | cut -d ' ' -f1 > $tmpdir/$x-files.txt
-  cut -d " " -f 1 data/$x/text | cut -d '_' -f 1 > $tmpdir/$x-id.txt 
+  cut -d '/' -f 3 < local/groundtruth-$x-2011.txt_sorted | cut -d ' ' -f 1 > $tmpdir/$x-files.txt
+  cut -d '/' -f 3 < local/groundtruth-$x-2011.txt_sorted | cut -d " " -f 1 | cut -d '_' -f 1 > $tmpdir/$x-id.txt 
   cat $tmpdir/$x-files.txt | sed 's/.tiff//' | paste -d " " - $tmpdir/$x-id.txt  | sort > data/$x/utt2spk
   # create the file that maps from speaker to utterance-list.
   utils/utt2spk_to_spk2utt.pl <data/$x/utt2spk  | sort >data/$x/spk2utt
 
-  utils/validate_data_dir.sh  --no-wav --no-feats data/$x 
+  utils/validate_data_dir.sh  --no-wav --no-feats data/$x || exit 1
 done
 
 echo "Data preparation succeeded"
