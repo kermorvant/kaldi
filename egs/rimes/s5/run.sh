@@ -27,7 +27,7 @@ for x in  test train; do
   steps/compute_cmvn_stats.sh --fake data/$x exp/make_mfcc/$x $mfccdir || exit 1;
 done
 
-utils/subset_data_dir.sh data/train 11265 data/train_10k
+utils/subset_data_dir.sh data/train 43786 data/train_10k
 
 
 

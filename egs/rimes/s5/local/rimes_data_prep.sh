@@ -11,13 +11,11 @@ mkdir -p $tmpdir
 
 for x in train test; do
   mkdir -p data/$x
+  # sort train and test files
+  sort local/groundtruth-$x-2011.txt > local/groundtruth-$x-2011.txt_sorted
+
   # create text transcription files
   cut -d '/' -f 3 < local/groundtruth-$x-2011.txt | sed 's/.tiff//' | sort > data/$x/text
-
-  # get scp file that has utterance-ids and maps to the sphere file.
-  #cut -d '/' -f 3 < local/groundtruth-$x-2011.txt | cut -d ' ' -f1 > $x_files.txt
-  #cut -d " " -f 1 data/$x/text  > $x_id.txt
-  #paste -d " " $tmpdir/$x-id.txt $tmpdir/$x-files.txt  | sort  > data/$x/wav.scp
 
 
   # now get the "utt2spk" file that says, for each utterance, the speaker name. 

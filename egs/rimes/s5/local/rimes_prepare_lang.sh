@@ -76,7 +76,7 @@ cat $tmpdir/lm_${lm_suffix}.arpa | \
     utils/eps2disambig.pl | utils/s2eps.pl | fstcompile --isymbols=$lang/words.txt \
       --osymbols=$lang/words.txt  --keep_isymbols=false --keep_osymbols=false | \
      fstrmepsilon | fstarcsort --sort_type=ilabel > $lang/G.fst
- fstisstochastic $lang/G.fst
+ fstisstochastic $lang/G.fst || exit 1;
 
 
 
